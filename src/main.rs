@@ -1,27 +1,21 @@
 mod conway;
 use conway::Conway;
+use std::time::Duration;
+use std::thread;
 
-const ROUNDS: u32 = 1000;
+const ROUNDS: u32 = 100000;
 
-fn search_immortal(rounds: u32,conway:&mut conway::Conway) {
+
+fn search_immortal(rounds: u32, conway: &mut conway::Conway) {
     let mut i: u32 = 1;
 
-    println!("Initial Status:");
-    println!("------------------------------------");
-    conway.print();
-
-    while i <= rounds && conway.is_alive() {
+    while i <= rounds && conway.is_alive() && conway.is_window_open(){
         conway.evolve();
-        i += 1;
-    }
-
-    if conway.is_alive() {
-        println!("This could be an immortal:");
         conway.print();
-    } else {
-        println!("The colony died after {} rounds! :(", i);
+        i += 1;
+
+        thread::sleep(Duration::from_millis(500));
     }
-    
 }
 
 fn main() {
